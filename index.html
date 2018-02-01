@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Learning Vue</title>
+
+    <style>
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="root">
+
+        <h1>
+            All tasks
+        </h1>
+
+        <ul>
+            <li v-for="task in tasks">{{task.description}}<input type="checkbox" :checked="task.completed" @click="checkTask(task)"></li>
+        </ul>
+
+        <h1>
+            Incomplete Tasks
+        </h1>
+
+        <ul>
+            <li v-for="task in incompleteTasks">{{task.description}}<input type="checkbox" :checked="task.completed" @click="checkTask(task)"></li>
+        </ul>
+
+        <input type="text" placeholder="Add new task" v-model="taskDescription">
+        <button @click="addTask(taskDescription)">Add new task</button>
+    </div>
+
+    <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+               tasks: [
+                   { description: 'Go to the store', completed: true },
+                   { description: 'Finish screencast', completed: false },
+                   { description: 'Make donation', completed: false },
+                   { description: 'Clear inbox', completed: false },
+                   { description: 'Make dinner', completed: false },
+                   { description: 'Clean room', completed: true },
+               ],
+
+                taskDescription: ''
+            },
+
+            methods: {
+                checkTask: function (task) {
+                    task.completed = !task.completed;
+                },
+
+                addTask: function (description) {
+                    var newTask = {
+                        description: description,
+                        completed: false
+                    };
+
+                    this.tasks.push(newTask);
+
+                    this.taskDescription = '';
+                }
+            },
+
+            computed: {
+                incompleteTasks: function() {
+                    return this.tasks.filter(function (task) {
+                        return !task.completed;
+                    });
+                }
+            }
+
+
+            /*mounted() {}*/
+        })
+    </script>
+</body>
+
+</html>
